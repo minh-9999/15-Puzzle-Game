@@ -1,0 +1,98 @@
+cmake_minimum_required(VERSION 3.16)
+set(NAME Puzzle15)
+
+
+project(${NAME} LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+include_directories(${PROJECT_SOURCE_DIR}/src/)
+file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cc)
+
+# put the path of SFML you downloaded
+set(SFML_DIR "path of SFML library")
+find_package(SFML 3.0.2 REQUIRED COMPONENTS Graphics Window Audio)
+
+if(WIN32)
+    add_executable(
+        ${NAME}
+        ${SRC_FILES}
+        resource.rc
+    )
+
+    # if build Debug with Console [int main()], disable this option
+    # use when [int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)]
+    set_target_properties(
+        ${NAME}
+        PROPERTIES WIN32_EXECUTABLE TRUE
+    )
+
+elseif(APPLE)
+    set(MACOSX_BUNDLE_ICON_FILE app.icns)
+    add_executable(
+        ${NAME}
+        MACOSX_BUNDLE ${SRC_FILES}
+        resources/app.icns
+    )
+
+    set_source_files_properties(
+        resources/app.icns
+        PROPERTIES MACOSX_PACKAGE_LOCATION
+        Resources
+    )
+endif()
+
+target_link_libraries(
+    ${NAME}
+    SFML::Window
+    SFML::Graphics
+    SFML::Audio
+)
+
+if(WIN32)
+
+    # copy assets to build folder
+    add_custom_command(TARGET ${NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${SFML_DIR}/../../../bin/sfml-audio$<$<CONFIG:Debug>:-d>-3.dll $<TARGET_FILE_DIR:${NAME}>
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${SFML_DIR}/../../../bin/sfml-graphics$<$<CONFIG:Debug>:-d>-3.dll $<TARGET_FILE_DIR:${NAME}>
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${SFML_DIR}/../../../bin/sfml-window$<$<CONFIG:Debug>:-d>-3.dll $<TARGET_FILE_DIR:${NAME}>
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${SFML_DIR}/../../../bin/sfml-system$<$<CONFIG:Debug>:-d>-3.dll $<TARGET_FILE_DIR:${NAME}>
+
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/assets/fonts $<TARGET_FILE_DIR:${NAME}>/assets/fonts
+
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/assets/musics $<TARGET_FILE_DIR:${NAME}>/assets/musics
+    )
+
+elseif(APPLE)
+
+    add_custom_command(TARGET ${NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${SFML_DIR}/../../../lib/libsfml-graphics$<$<CONFIG:Debug>:-d>-.3.dylib $<TARGET_BUNDLE_DIR:${NAME}>/Contents/Frameworks
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${SFML_DIR}/../../../lib/libsfml-window$<$<CONFIG:Debug>:-d>-.3.dylib $<TARGET_BUNDLE_DIR:${NAME}>/Contents/Frameworks
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${SFML_DIR}/../../../lib/libsfml-audio$<$<CONFIG:Debug>:-d>-.3.dylib $<TARGET_BUNDLE_DIR:${NAME}>/Contents/Frameworks
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${SFML_DIR}/../../../lib/libsfml-system$<$<CONFIG:Debug>:-d>-.3.dylib $<TARGET_BUNDLE_DIR:${NAME}>/Contents/Frameworks
+
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/assets/fonts $<TARGET_BUNDLE_DIR:${NAME}>/Contents/Resources/fonts
+
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/assets/musics $<TARGET_BUNDLE_DIR:${NAME}>/Contents/Resources/musics
+    )
+
+endif()
