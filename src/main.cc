@@ -1,12 +1,13 @@
-
-
 #include "board.hh"
 #include "createShape.hh"
 #include "utilities.hh"
 #include "UI.hh"
 
 #include <algorithm>
+
+#ifdef _WIN32
 #include <windows.h>
+#endif
 
 constexpr int gap = 40; // Gap
 constexpr int gapRight = 80;
@@ -33,7 +34,12 @@ sf::Time winShownTime; // Duration for which the win screen/message is displayed
 // int main(int argc, char *argv[])
 
 // Standard Windows GUI entry point (no console window)
+#ifdef _WIN32
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
+#else
+int main(int argc, char *argv[])
+#endif
+
 {
     auto window = createWindow(N, tileSize, margin, headerHeight, topMargin, rightPanelWidth);
 
