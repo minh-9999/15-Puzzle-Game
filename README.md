@@ -42,10 +42,10 @@ Click sound when moving tiles, win sound when solved.
 
 Semi-transparent overlay with a win message for 3 seconds.
 
-Background music with toggle option.
+Background music with toggle option.  
 
-
-<img src="https://raw.githubusercontent.com/minh-9999/the-invincible-southern-soaring-eagle/refs/heads/feature/dev/resources/UI.PNG" alt="anh-mieu-ta" border="0">
+  
+<img src="https://raw.githubusercontent.com/minh-9999/15-Puzzle-Game/refs/heads/main/assets/Capture.PNG" alt="anh-mieu-ta" border="0">
 
 ---
 

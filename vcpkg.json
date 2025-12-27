@@ -1,0 +1,5 @@
+{
+  "name": "puzzle-game",
+  "version-string": "1.0.0",
+  "dependencies": [{ "name": "sfml", "default-features": true }]
+}
