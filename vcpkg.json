@@ -3,5 +3,5 @@
   "version-string": "1.0.0",
   "dependencies": [{ "name": "sfml", "default-features": true }],
 
-  "builtin-baseline": "8e2f3c4d5a6b7c8d9e0f..."
+  "builtin-baseline": "c93431c51b046bd9f74356e8ac6cbf10586f7310"
 }
