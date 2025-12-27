@@ -33,7 +33,7 @@ elseif(APPLE)
     add_executable(
         ${NAME}
         MACOSX_BUNDLE ${SRC_FILES}
-        app.icns
+        puzzle.icns
     )
 
     set_source_files_properties(
