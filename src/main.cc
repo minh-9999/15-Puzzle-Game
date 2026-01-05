@@ -68,9 +68,10 @@ int main(int argc, char *argv[])
 {
 #if defined(SFML_SYSTEM_MACOS)
     constexpr float SCALE = 0.4f;
-    constexpr float SCALEFONT = 0.9f; // FONT SCALE
+    constexpr float SCALEFONT = 0.8f; // FONT SCALE
 #else
-    constexpr float SCALE = 1.0f;
+    constexpr float SCALE = 1.f;
+    constexpr float SCALEFONT = 1.f; // FONT SCALE
 #endif
 
     constexpr int gap = static_cast<int>(40 * SCALE);
@@ -85,7 +86,7 @@ int main(int argc, char *argv[])
     constexpr int rightMargin = static_cast<int>(100);
     constexpr int bottomMargin = static_cast<int>(160);
     constexpr int sideMargin = static_cast<int>(180);
-    constexpr int rightPanelWidth = static_cast<int>(800 * SCALE);
+    constexpr int rightPanelWidth = static_cast<int>(600 * SCALE);
 
     auto window = createWindow(N, tileSize, margin, headerHeight, topMargin, rightPanelWidth, bottomMargin);
 
