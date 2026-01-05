@@ -7,7 +7,7 @@ constexpr int N = 4;
 
 // Gap between tiles
 #if defined(__APPLE__)
-constexpr int gap = 30;
+constexpr int gap = 20;
 #else
 constexpr int gap = 40;
 #endif

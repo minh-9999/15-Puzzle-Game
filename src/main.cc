@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 {
 #if defined(SFML_SYSTEM_MACOS)
     constexpr float SCALE = 0.4f;
-    constexpr float SCALEFONT = 0.8f; // FONT SCALE
+    constexpr float SCALEFONT = 0.6f; // FONT SCALE
 #else
     constexpr float SCALE = 1.f;
     constexpr float SCALEFONT = 1.f; // FONT SCALE
@@ -124,11 +124,11 @@ int main(int argc, char *argv[])
     if (!loadFonts(fonts, fontFiles))
         return 1;
 
-    constexpr unsigned int TITLE_FONT_SIZE = static_cast<unsigned int>(60 * SCALEFONT);  // for title text
-    constexpr unsigned int NUMBER_FONT_SIZE = static_cast<unsigned int>(40 * SCALEFONT); // for tile numbers
-    constexpr unsigned int INFO_FONT_SIZE = static_cast<unsigned int>(30 * SCALEFONT);   // for time and moves info
-    constexpr unsigned int BUTTON_FONT_SIZE = static_cast<unsigned int>(20 * SCALEFONT); // for button text
-    constexpr unsigned int WIN_TEXT_SIZE = static_cast<unsigned int>(40 * SCALEFONT);    // for "YOU WIN!"
+    constexpr unsigned int TITLE_FONT_SIZE = static_cast<unsigned int>(80 * SCALEFONT);  // for title text
+    constexpr unsigned int NUMBER_FONT_SIZE = static_cast<unsigned int>(80 * SCALEFONT); // for tile numbers
+    constexpr unsigned int INFO_FONT_SIZE = static_cast<unsigned int>(40 * SCALEFONT);   // for time and moves info
+    // constexpr unsigned int BUTTON_FONT_SIZE = static_cast<unsigned int>(80 * SCALEFONT); // for button text
+    constexpr unsigned int WIN_TEXT_SIZE = static_cast<unsigned int>(80 * SCALEFONT); // for "YOU WIN!"
 
     int emptyIdx = std::find(board.begin(), board.end(), 0) - board.begin(); // index of empty tile
     bool musicPlaying = true;
