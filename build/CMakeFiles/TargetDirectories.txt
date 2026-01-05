@@ -1,0 +1,3 @@
+/Volumes/Hai Data/du an/SFML 15 puzzle/15-Puzzle-Game/build/CMakeFiles/Puzzle15.dir
+/Volumes/Hai Data/du an/SFML 15 puzzle/15-Puzzle-Game/build/CMakeFiles/edit_cache.dir
+/Volumes/Hai Data/du an/SFML 15 puzzle/15-Puzzle-Game/build/CMakeFiles/rebuild_cache.dir

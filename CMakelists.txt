@@ -11,8 +11,14 @@ include_directories(${PROJECT_SOURCE_DIR}/src/)
 file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cc)
 
 # put the path of SFML you downloaded
-set(SFML_DIR "path of SFML library")
-find_package(SFML 3.0.2 REQUIRED COMPONENTS Graphics Window Audio)
+# set(SFML_DIR "path of SFML library")
+if(APPLE)
+    set(SFML_DIR "/usr/local/Cellar/sfml/3.0.2/lib/cmake/SFML")
+endif()
+
+# find_package(SFML 3.0.2 REQUIRED COMPONENTS Graphics Window Audio)
+find_package(SFML REQUIRED COMPONENTS Graphics Window Audio)
+
 
 if(WIN32)
     add_executable(
@@ -48,6 +54,7 @@ target_link_libraries(
     SFML::Window
     SFML::Graphics
     SFML::Audio
+    "-framework CoreFoundation"
 )
 
 if(WIN32)
@@ -77,22 +84,25 @@ elseif(APPLE)
 
     add_custom_command(TARGET ${NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
-        ${SFML_DIR}/../../../lib/libsfml-graphics$<$<CONFIG:Debug>:-d>-.3.dylib $<TARGET_BUNDLE_DIR:${NAME}>/Contents/Frameworks
+        ${SFML_DIR}/../../../lib/libsfml-graphics.3.0.2.dylib $<TARGET_BUNDLE_DIR:${NAME}>/Contents/Frameworks
 
         COMMAND ${CMAKE_COMMAND} -E copy
-        ${SFML_DIR}/../../../lib/libsfml-window$<$<CONFIG:Debug>:-d>-.3.dylib $<TARGET_BUNDLE_DIR:${NAME}>/Contents/Frameworks
+        ${SFML_DIR}/../../../lib/libsfml-window.3.0.2.dylib $<TARGET_BUNDLE_DIR:${NAME}>/Contents/Frameworks
 
         COMMAND ${CMAKE_COMMAND} -E copy
-        ${SFML_DIR}/../../../lib/libsfml-audio$<$<CONFIG:Debug>:-d>-.3.dylib $<TARGET_BUNDLE_DIR:${NAME}>/Contents/Frameworks
+        ${SFML_DIR}/../../../lib/libsfml-audio.3.0.2.dylib $<TARGET_BUNDLE_DIR:${NAME}>/Contents/Frameworks
 
         COMMAND ${CMAKE_COMMAND} -E copy
-        ${SFML_DIR}/../../../lib/libsfml-system$<$<CONFIG:Debug>:-d>-.3.dylib $<TARGET_BUNDLE_DIR:${NAME}>/Contents/Frameworks
+        ${SFML_DIR}/../../../lib/libsfml-system.3.0.2.dylib $<TARGET_BUNDLE_DIR:${NAME}>/Contents/Frameworks
 
+        # Copy assets into Contents/MacOS/assets for code find out
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/assets/fonts $<TARGET_BUNDLE_DIR:${NAME}>/Contents/Resources/fonts
+        ${CMAKE_SOURCE_DIR}/assets $<TARGET_BUNDLE_DIR:${NAME}>/Contents/Resources/assets
 
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/assets/musics $<TARGET_BUNDLE_DIR:${NAME}>/Contents/Resources/musics
+        # COMMAND ${CMAKE_COMMAND} -E copy_directory
+        # ${CMAKE_SOURCE_DIR}/assets ${CMAKE_BINARY_DIR}/assets
+
     )
+
 
 endif()

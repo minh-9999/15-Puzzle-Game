@@ -4,6 +4,8 @@
 #include "UI.hh"
 
 #include <algorithm>
+#include <string>
+#include <CoreFoundation/CoreFoundation.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -30,6 +32,26 @@ bool gameWon = false;  // Flag indicating whether the puzzle has been solved
 int finalTime = 0;     // Time taken to win (in seconds or chosen unit)
 sf::Time winShownTime; // Duration for which the win screen/message is displayed
 
+std::string resourcePath()
+{
+#if defined(SFML_SYSTEM_MACOS) // macOS bundle: Resources inside Contents/Resources
+    CFBundleRef mainBundle = CFBundleGetMainBundle();
+    CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
+    char path[PATH_MAX];
+    if (CFURLGetFileSystemRepresentation(resourcesURL, true, (UInt8 *)path, PATH_MAX))
+    {
+        CFRelease(resourcesURL);
+        return std::string(path) + "/assets/";
+    }
+
+    CFRelease(resourcesURL);
+    return "";
+#else
+    // Other platforms: resources in executable directory
+    return "assets/";
+#endif
+}
+
 // Use main() only if you want to run the app with a console window
 // int main(int argc, char *argv[])
 
@@ -44,10 +66,14 @@ int main(int argc, char *argv[])
     auto window = createWindow(N, tileSize, margin, headerHeight, topMargin, rightPanelWidth);
 
     // ===== Add background music =====
-    auto music = loadBackgroundMusic("assets/musics/bg_music.mp3");
+    // auto music = loadBackgroundMusic("assets/musics/bg_music.mp3");
 
-    auto clickSound = loadSound("assets/musics/pick.wav");
-    auto winSound = loadSound("assets/musics/win.mp3");
+    // auto clickSound = loadSound("assets/musics/pick.wav");
+    // auto winSound = loadSound("assets/musics/win.mp3");
+
+    auto music = loadBackgroundMusic(resourcePath() + "musics/bg_music.mp3");
+    auto clickSound = loadSound(resourcePath() + "musics/pick.wav");
+    auto winSound = loadSound(resourcePath() + "musics/win.mp3");
 
     // Initial board configuration (classic 15 puzzle)
     std::array<int, 16> board = {1, 2, 3, 4, 5, 6, 7, 8,
@@ -58,11 +84,17 @@ int main(int argc, char *argv[])
     std::map<std::string, sf::Font> fonts;
 
     // Font files used for different UI elements
+    // std::map<std::string, std::string> fontFiles = {
+    //     {"number", "assets/fonts/Montserrat-Bold.ttf"},
+    //     {"title", "assets/fonts/Poppins-Bold.ttf"},
+    //     {"info", "assets/fonts/Nunito-Regular.ttf"},
+    //     {"button", "assets/fonts/Quicksand-Bold.otf"}};
+
     std::map<std::string, std::string> fontFiles = {
-        {"number", "assets/fonts/Montserrat-Bold.ttf"},
-        {"title", "assets/fonts/Poppins-Bold.ttf"},
-        {"info", "assets/fonts/Nunito-Regular.ttf"},
-        {"button", "assets/fonts/Quicksand-Bold.otf"}};
+        {"number", resourcePath() + "fonts/Montserrat-Bold.ttf"},
+        {"title", resourcePath() + "fonts/Poppins-Bold.ttf"},
+        {"info", resourcePath() + "fonts/Nunito-Regular.ttf"},
+        {"button", resourcePath() + "fonts/Quicksand-Bold.otf"}};
 
     if (!loadFonts(fonts, fontFiles))
         return 1;
