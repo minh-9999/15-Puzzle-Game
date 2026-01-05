@@ -5,9 +5,10 @@
 
 #include <algorithm>
 #include <string>
-#include <CoreFoundation/CoreFoundation.h>
 
-#ifdef _WIN32
+#if defined(__APPLE__)
+#include <CoreFoundation/CoreFoundation.h>
+#elif defined(_WIN32)
 #include <windows.h>
 #endif
 

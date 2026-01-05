@@ -2,6 +2,7 @@
 ##### skip folders
 build-release/
 build-debug/
+build/
 .vscode/
 .cache/
 

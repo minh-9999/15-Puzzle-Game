@@ -14,6 +14,8 @@ file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cc)
 # set(SFML_DIR "path of SFML library")
 if(APPLE)
     set(SFML_DIR "/usr/local/Cellar/sfml/3.0.2/lib/cmake/SFML")
+elseif(WIN32)
+    set(SFML_DIR "Y:/Thuc Hanh Lap Trinh C++/thu vien/SFML-3.0.2-CL/lib/cmake/SFML")
 endif()
 
 # find_package(SFML 3.0.2 REQUIRED COMPONENTS Graphics Window Audio)
@@ -54,8 +56,10 @@ target_link_libraries(
     SFML::Window
     SFML::Graphics
     SFML::Audio
-    "-framework CoreFoundation"
 )
+if(APPLE)
+    target_link_libraries(${NAME} "-framework CoreFoundation")
+endif()
 
 if(WIN32)
 
