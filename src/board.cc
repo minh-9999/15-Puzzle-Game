@@ -4,8 +4,13 @@
 
 // Board size (4x4 puzzle)
 constexpr int N = 4;
+
 // Gap between tiles
+#if defined(__APPLE__)
+constexpr int gap = 30;
+#else
 constexpr int gap = 40;
+#endif
 
 /**
  * Shuffle the puzzle board by performing random valid moves.
@@ -68,7 +73,7 @@ void drawBoard(sf::RenderWindow &window,
                const std::array<int, 16> &board,
                const sf::Font &fontNumber,
                float margin, float headerHeight, float topMargin,
-               float rectSize, float cornerRadius)
+               float rectSize, float cornerRadius, unsigned int fontSize)
 {
     for (int i = 0; i < 16; ++i)
     {
@@ -102,7 +107,7 @@ void drawBoard(sf::RenderWindow &window,
         // Draw number if not empty
         if (val)
         {
-            sf::Text text(fontNumber, std::to_string(val), 120);
+            sf::Text text(fontNumber, std::to_string(val), fontSize);
             text.setFillColor(sf::Color::White);
             centerText(text, x, y, rectSize, rectSize);
             window.draw(text);

@@ -40,12 +40,14 @@ void shuffleBoard(std::array<int, 16> &);
  * @param topMargin    Extra top padding below the header.
  * @param rectSize     Tile width/height (square).
  * @param cornerRadius Corner radius for rounded tile rectangles.
+ * @param fontSize     Font size for tile numbers.
  */
 void drawBoard(sf::RenderWindow &window,
                const std::array<int, 16> &board,
                const sf::Font &fontNumber,
                float margin, float headerHeight, float topMargin,
-               float rectSize, float cornerRadius);
+               float rectSize, float cornerRadius,
+               unsigned int fontSize);
 
 /**
  * Attempt to move a tile into the empty space if it is adjacent.
@@ -91,5 +93,3 @@ void tryMoveTile(std::array<int, 16> &board,
  * @return true if solved; false otherwise.
  */
 bool isSolved(const std::array<int, 16> &board);
-
-

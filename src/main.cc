@@ -12,6 +12,7 @@
 #include <windows.h>
 #endif
 
+/*
 constexpr int gap = 40; // Gap
 constexpr int gapRight = 80;
 constexpr int rectSize = 280;
@@ -26,6 +27,7 @@ constexpr int bottomMargin = 160;
 constexpr int sideMargin = 180;
 
 constexpr int rightPanelWidth = 600; // Extra space on the right for music/hint
+*/
 
 sf::Clock gameClock;   // Clock to track elapsed game time
 int moveCount{0};      // Number of moves made by the player
@@ -64,7 +66,28 @@ int main(int argc, char *argv[])
 #endif
 
 {
-    auto window = createWindow(N, tileSize, margin, headerHeight, topMargin, rightPanelWidth);
+#if defined(SFML_SYSTEM_MACOS)
+    constexpr float SCALE = 0.4f;
+    constexpr float SCALEFONT = 0.9f; // FONT SCALE
+#else
+    constexpr float SCALE = 1.0f;
+#endif
+
+    constexpr int gap = static_cast<int>(40 * SCALE);
+    constexpr int gapRight = static_cast<int>(80 * SCALE);
+    constexpr int rectSize = static_cast<int>(280 * SCALE);
+    constexpr int tileSize = rectSize + gap;
+    constexpr float cornerRadius = 20.f * SCALE;
+
+    constexpr int headerHeight = static_cast<int>(240 * SCALE);
+    constexpr int margin = static_cast<int>(200);
+    constexpr int topMargin = static_cast<int>(50 * SCALE);
+    constexpr int rightMargin = static_cast<int>(100);
+    constexpr int bottomMargin = static_cast<int>(160);
+    constexpr int sideMargin = static_cast<int>(180);
+    constexpr int rightPanelWidth = static_cast<int>(800 * SCALE);
+
+    auto window = createWindow(N, tileSize, margin, headerHeight, topMargin, rightPanelWidth, bottomMargin);
 
     // ===== Add background music =====
     // auto music = loadBackgroundMusic("assets/musics/bg_music.mp3");
@@ -99,6 +122,12 @@ int main(int argc, char *argv[])
 
     if (!loadFonts(fonts, fontFiles))
         return 1;
+
+    constexpr unsigned int TITLE_FONT_SIZE = static_cast<unsigned int>(60 * SCALEFONT);  // for title text
+    constexpr unsigned int NUMBER_FONT_SIZE = static_cast<unsigned int>(40 * SCALEFONT); // for tile numbers
+    constexpr unsigned int INFO_FONT_SIZE = static_cast<unsigned int>(30 * SCALEFONT);   // for time and moves info
+    constexpr unsigned int BUTTON_FONT_SIZE = static_cast<unsigned int>(20 * SCALEFONT); // for button text
+    constexpr unsigned int WIN_TEXT_SIZE = static_cast<unsigned int>(40 * SCALEFONT);    // for "YOU WIN!"
 
     int emptyIdx = std::find(board.begin(), board.end(), 0) - board.begin(); // index of empty tile
     bool musicPlaying = true;
@@ -177,7 +206,7 @@ int main(int argc, char *argv[])
         window.clear(sf::Color(180, 140, 200)); // light purple background
 
         // Draw title
-        sf::Text title(fonts["title"], "15 PUZZLE GAME", 80);
+        sf::Text title(fonts["title"], "15 PUZZLE GAME", TITLE_FONT_SIZE);
         title.setFillColor(sf::Color(128, 0, 128)); // purple color
         title.setStyle(sf::Text::Bold);
         centerText(title, margin, topMargin, N * tileSize, headerHeight);
@@ -189,9 +218,9 @@ int main(int argc, char *argv[])
         float RightX = margin + N * tileSize;
         float TopY = headerHeight + topMargin;
 
-        drawUI(window, fonts["info"], musicPlaying, elapsedSeconds, finalTime, gameWon, moveCount, RightX, TopY, rightMargin, gapRight);
+        drawUI(window, fonts["info"], musicPlaying, elapsedSeconds, finalTime, gameWon, moveCount, RightX, TopY, rightMargin, gapRight, INFO_FONT_SIZE);
 
-        drawBoard(window, board, fonts["number"], margin, headerHeight, topMargin, rectSize, cornerRadius);
+        drawBoard(window, board, fonts["number"], margin, headerHeight, topMargin, rectSize, cornerRadius, NUMBER_FONT_SIZE);
 
         if (gameWon)
         {
@@ -202,7 +231,7 @@ int main(int argc, char *argv[])
                 won.setFillColor(sf::Color(0, 0, 0, 150));
                 window.draw(won);
 
-                sf::Text winText(fonts["title"], " YOU WIN! ", 80);
+                sf::Text winText(fonts["title"], " YOU WIN! ", WIN_TEXT_SIZE);
                 winText.setFillColor(sf::Color::Yellow);
                 winText.setStyle(sf::Text::Bold);
                 centerText(winText, 0, window.getSize().y / 2.f - 100, window.getSize().x, 200);

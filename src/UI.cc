@@ -26,13 +26,14 @@ void drawUI(sf::RenderWindow &window,
             int elapsedSeconds, int finalTime,
             bool gameWon, int moveCount,
             float RightX, float TopY,
-            float rightMargin, float gapRight)
+            float rightMargin, float gapRight,
+            unsigned int fontSize)
 {
     // Music status indicator (shows current state and shortcut key)
     // Position: first line of the panel
     sf::Text musicStatus(fontInfo,
                          musicPlaying ? "[ON] Music: (M)" : "[OFF] Music: (M)",
-                         50);
+                         fontSize);
     // ON = warm red; OFF = neutral gray
     musicStatus.setFillColor(musicPlaying ? sf::Color(220, 50, 50)
                                           : sf::Color(150, 150, 150));
@@ -41,8 +42,9 @@ void drawUI(sf::RenderWindow &window,
     window.draw(musicStatus);
 
     // Shortcut hints (placed below status with vertical spacing)
-    sf::Text hint1(fontInfo, "Press M to toggle music", 40);
-    sf::Text hint2(fontInfo, "Press R to restart", 40);
+    unsigned int hintSize = static_cast<unsigned int>(fontSize * 0.6f);
+    sf::Text hint1(fontInfo, "Press M to toggle music", hintSize);
+    sf::Text hint2(fontInfo, "Press R to restart", hintSize);
     hint1.setFillColor(sf::Color(220, 220, 220)); // soft gray, lower emphasis
     hint2.setFillColor(sf::Color(220, 220, 220));
     hint1.setPosition(sf::Vector2f(RightX + rightMargin, TopY + gapRight * 2));
@@ -53,7 +55,7 @@ void drawUI(sf::RenderWindow &window,
     // Time: shows live elapsed time until win, then locks to finalTime
     // Positioned further down to visually separate from hints
     const int timeValue = gameWon ? finalTime : elapsedSeconds;
-    sf::Text timeText(fontInfo, "TIME  " + std::to_string(timeValue) + "s", 50);
+    sf::Text timeText(fontInfo, "TIME  " + std::to_string(timeValue) + "s", fontSize);
     timeText.setFillColor(sf::Color::White);
     timeText.setStyle(sf::Text::Bold);
     timeText.setPosition(sf::Vector2f(RightX + rightMargin, TopY + gapRight * 5));
@@ -61,10 +63,10 @@ void drawUI(sf::RenderWindow &window,
 
     // Moves: total number of player actions (swaps)
     // Placed one line below time
-    sf::Text moveText(fontInfo, "MOVES  " + std::to_string(moveCount), 50);
+    sf::Text moveText(fontInfo, "MOVES  " + std::to_string(moveCount), fontSize);
     moveText.setFillColor(sf::Color::White);
     moveText.setStyle(sf::Text::Bold);
-    moveText.setPosition(sf::Vector2f(RightX + rightMargin, TopY + gapRight * 6));
+    moveText.setPosition(sf::Vector2f(RightX + rightMargin, TopY + gapRight * 7));
     window.draw(moveText);
 }
 
@@ -93,12 +95,13 @@ sf::RenderWindow createWindow(
     unsigned int margin,
     unsigned int headerHeight,
     unsigned int topMargin,
-    unsigned int rightPanelWidth)
+    unsigned int rightPanelWidth,
+    unsigned int bottomMargin)
 {
     // Compute the final window size from layout parameters
     sf::Vector2u size(
         N * tileSize + margin * 2 + rightPanelWidth,           // total width
-        N * tileSize + headerHeight + topMargin                 // total height
+        N * tileSize + headerHeight + topMargin + bottomMargin // total height
     );
 
     // Create the window with a fixed size and a descriptive title
@@ -113,4 +116,3 @@ sf::RenderWindow createWindow(
 
     return window;
 }
-

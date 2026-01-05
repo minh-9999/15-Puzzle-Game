@@ -15,15 +15,17 @@ void drawUI(sf::RenderWindow &window,
             float RightX,             // starting X position of the right panel
             float TopY,               // starting Y position of the right panel
             float rightMargin,        // margin on the right side
-            float gapRight);          // gap between UI elements in the right panel
+            float gapRight,           // gap between UI elements in the right panel
+            unsigned int fontSize);   // font size for the UI text
 
 // Create and return the main game window
 // Window size is calculated based on puzzle size, margins, header height, and right panel width
 sf::RenderWindow createWindow(
-    unsigned int N,              // puzzle dimension (e.g., 4 for 4x4)
-    unsigned int tileSize,       // size of each tile
-    unsigned int margin,         // margin around the puzzle
-    unsigned int headerHeight,   // height of the header area
-    unsigned int topMargin,      // margin above the puzzle
-    unsigned int rightPanelWidth // extra space on the right for UI panel
+    unsigned int N,               // puzzle dimension (e.g., 4 for 4x4)
+    unsigned int tileSize,        // size of each tile
+    unsigned int margin,          // margin around the puzzle
+    unsigned int headerHeight,    // height of the header area
+    unsigned int topMargin,       // margin above the puzzle
+    unsigned int rightPanelWidth, // extra space on the right for UI panel
+    unsigned int bottomMargin     // margin below the puzzle
 );
